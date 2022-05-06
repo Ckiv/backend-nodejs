@@ -1,12 +1,21 @@
 import express from 'express'
+import mysql from 'mysql2'
+import router from "./routers/userRouter.js";
 
 const PORT = 5000;
 const app = express();
+
+
+
 app.use(express.json());
+app.use('/api', router);
 
-app.post('/', (req, res) => {
-    console.log(req.body);
-    res.status(200).json('сервер работает123')
-})
+async function startApp() {
+    try {
+        app.listen(PORT, () => console.log('SERVER STARTED ON PORT ' + PORT))
+    } catch (e) {
+        console.log(e)
+    }
+}
 
-app.listen(PORT, () => console.log('server start port ' + PORT))
+startApp();
