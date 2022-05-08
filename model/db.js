@@ -1,20 +1,20 @@
 import mysql from 'mysql2'
+import Sequelize from 'sequelize'
 import config from '../config/config.js'
 
-const connection = mysql.createConnection({
+const sequelize = new Sequelize(config.database, config.user, config.password, {
     host: config.host,
-    user: config.user,
-    database: config.database,
-    password: config.password
-});
-
-connection.connect(function(err){
-    if (err) {
-        return console.error("Ошибка: " + err.message);
-    }
-    else{
-        console.log("Подключение к серверу MySQL успешно установлено");
+    dialect: "mysql",
+    define: {
+        timestamps: false
     }
 });
 
-export default connection;
+try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+} catch (error) {
+    console.error('Unable to connect to the database:', error);
+}
+
+export default sequelize;
